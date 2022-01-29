@@ -1,7 +1,11 @@
+import "../styles/app.css";
+import UsersList from "./UsersList";
+
 function App() {
   return (
-    <div className="App">
-      <h1>Main App window</h1>
+    <div className="app_cnt">
+      <h1 className="app_heading">Dashboard</h1>
+      <UsersList />
     </div>
   );
 }

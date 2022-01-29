@@ -1,0 +1,9 @@
+.app_cnt {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.app_heading {
+  width: 90%;
+  margin: calc(3 * var(--reference-size)) auto;
+}
