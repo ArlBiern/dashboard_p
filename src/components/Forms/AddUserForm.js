@@ -1,44 +1,39 @@
 import { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import Button from "@mui/material/Button";
 
 import FormFields from "./FormFields";
-import validationRules from "../../data/validationRules";
+import FormButtons from "./FormButtons";
+import validationFunction from "../../helpers/validationFunction";
 import { addUser } from "../../actions";
 import "../../styles/form.css";
 
 class AddUserForm extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      name: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      username: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      email: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      city: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-    };
-  }
+  state = {
+    name: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    username: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    email: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    city: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+  };
 
   onInputChange(e) {
     let { name, value } = e.target;
@@ -52,52 +47,16 @@ class AddUserForm extends Component {
   }
 
   onInputBlur(e) {
-    let { name, value } = e.target;
-    let { required, regex } = validationRules[name];
-
-    if (required.value && this.state[name].value.length === 0) {
-      this.setState({
-        [name]: {
-          ...this.state[name],
-          error: true,
-          helperText: required.errorText,
-          filled: false,
-        },
-      });
-
-      return;
-    } else if (regex.value) {
-      let regExTest = new RegExp(regex.value);
-
-      if (!regExTest.test(value)) {
-        this.setState({
-          [name]: {
-            ...this.state[name],
-            error: true,
-            helperText: regex.errorText,
-            filled: false,
-          },
-        });
-      } else {
-        this.setState({
-          [name]: {
-            ...this.state[name],
-            error: false,
-            helperText: "",
-            filled: true,
-          },
-        });
-      }
-    } else {
-      this.setState({
-        [name]: {
-          ...this.state[name],
-          error: false,
-          helperText: "",
-          filled: true,
-        },
-      });
-    }
+    const { name } = e.target;
+    const validation = validationFunction(e, this.state);
+    this.setState({
+      [name]: {
+        ...this.state[name],
+        error: validation[name].error,
+        helperText: validation[name].helperText,
+        filled: validation[name].filled,
+      },
+    });
   }
 
   handleSubmit(e) {
@@ -129,23 +88,7 @@ class AddUserForm extends Component {
           onInputBlur={this.onInputBlur.bind(this)}
           data={this.state}
         />
-        <div className="form_buttonsCnt">
-          <Button variant="outlined" color="error" className="form_button">
-            <Link className="router_link" to="/">
-              Cancel
-            </Link>
-          </Button>
-          <Button
-            /*  ref={this.addButton} */
-            variant="contained"
-            color="success"
-            className="form_button"
-            type="submit"
-            onClick={this.handleSubmit.bind(this)}
-          >
-            Add
-          </Button>
-        </div>
+        <FormButtons onSubmit={this.handleSubmit.bind(this)} buttonRole="Add" />
       </div>
     );
   }

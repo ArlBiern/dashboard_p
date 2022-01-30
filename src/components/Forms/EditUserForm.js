@@ -1,49 +1,69 @@
-import { Component, createRef } from "react";
-import { Link } from "react-router-dom";
+import { Component } from "react";
 import { connect } from "react-redux";
-import Button from "@mui/material/Button";
 
 import FormFields from "./FormFields";
-import validationRules from "../../data/validationRules";
+import FormButtons from "./FormButtons";
+import validationFunction from "../../helpers/validationFunction";
 import { editUser, fetchUser } from "../../actions";
 import "../../styles/form.css";
 
 class EditUserForm extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      name: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      username: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      email: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-      city: {
-        value: "",
-        helperText: "",
-        error: false,
-        filled: false,
-      },
-    };
-
-    this.addButton = createRef();
-  }
+  state = {
+    name: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    username: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    email: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+    city: {
+      value: "",
+      helperText: "",
+      error: false,
+      filled: false,
+    },
+  };
 
   componentDidMount() {
     this.props.fetchUser(this.props.match.params.id);
+
+    this.setState({
+      name: {
+        value: this.props.user.name,
+        helperText: "",
+        error: false,
+        filled: true,
+      },
+      username: {
+        value: this.props.user.username,
+        helperText: "",
+        error: false,
+        filled: true,
+      },
+      email: {
+        value: this.props.user.email,
+        helperText: "",
+        error: false,
+        filled: true,
+      },
+      city: {
+        value: this.props.user.city,
+        helperText: "",
+        error: false,
+        filled: true,
+      },
+    });
   }
 
   onInputChange(e) {
@@ -58,52 +78,16 @@ class EditUserForm extends Component {
   }
 
   onInputBlur(e) {
-    let { name, value } = e.target;
-    let { required, regex } = validationRules[name];
-
-    if (required.value && this.state[name].value.length === 0) {
-      this.setState({
-        [name]: {
-          ...this.state[name],
-          error: true,
-          helperText: required.errorText,
-          filled: false,
-        },
-      });
-
-      return;
-    } else if (regex.value) {
-      let regExTest = new RegExp(regex.value);
-
-      if (!regExTest.test(value)) {
-        this.setState({
-          [name]: {
-            ...this.state[name],
-            error: true,
-            helperText: regex.errorText,
-            filled: false,
-          },
-        });
-      } else {
-        this.setState({
-          [name]: {
-            ...this.state[name],
-            error: false,
-            helperText: "",
-            filled: true,
-          },
-        });
-      }
-    } else {
-      this.setState({
-        [name]: {
-          ...this.state[name],
-          error: false,
-          helperText: "",
-          filled: true,
-        },
-      });
-    }
+    const { name } = e.target;
+    const validation = validationFunction(e, this.state);
+    this.setState({
+      [name]: {
+        ...this.state[name],
+        error: validation[name].error,
+        helperText: validation[name].helperText,
+        filled: validation[name].filled,
+      },
+    });
   }
 
   handleSubmit(e) {
@@ -141,24 +125,12 @@ class EditUserForm extends Component {
           onInputChange={this.onInputChange.bind(this)}
           onInputBlur={this.onInputBlur.bind(this)}
           data={this.state}
+          user={this.props.user}
         />
-        <div className="form_buttonsCnt">
-          <Button variant="outlined" color="error" className="form_button">
-            <Link className="router_link" to="/">
-              Cancel
-            </Link>
-          </Button>
-          <Button
-            ref={this.addButton}
-            variant="contained"
-            color="success"
-            className="form_button"
-            type="submit"
-            onClick={this.handleSubmit.bind(this)}
-          >
-            Edit
-          </Button>
-        </div>
+        <FormButtons
+          onSubmit={this.handleSubmit.bind(this)}
+          buttonRole="Edit"
+        />
       </div>
     );
   }

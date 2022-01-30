@@ -5,7 +5,7 @@ const validationRules = {
       errorText: `Name field is required`,
     },
     regex: {
-      value: /[A-Za-z]{2,5}/,
+      value: /^[a-zA-Z ]{2,50}$/,
       errorText: `This input should contain only letters (minimum 2 and maximum 50)`,
     },
   },
@@ -15,7 +15,7 @@ const validationRules = {
       errorText: `Username field is required`,
     },
     regex: {
-      value: /[A-Za-z]{2,50}/,
+      value: /^[a-zA-Z ]{2,50}$/,
       errorText: `This input should contain only letters (minimum 2 and maximum 50)`,
     },
   },
@@ -36,7 +36,7 @@ const validationRules = {
     },
 
     regex: {
-      value: /[A-Za-z]{2,100}/,
+      value: /^[a-zA-Z ]{2,100}$/,
       errorText: `This input should contain only letters (minimum 2 and maximum 100)`,
     },
   },
