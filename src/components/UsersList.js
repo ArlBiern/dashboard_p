@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -46,10 +47,16 @@ class UsersList extends Component {
           <StyledTableCell align="center">{user.name}</StyledTableCell>
           <StyledTableCell align="center">{user.username}</StyledTableCell>
           <StyledTableCell align="center">{user.email}</StyledTableCell>
-          <StyledTableCell align="center">{user.address.city}</StyledTableCell>
+          <StyledTableCell align="center">{user.city}</StyledTableCell>
           <StyledTableCell align="center">
             <Button variant="outlined" color="success">
-              edit
+              <Link
+                className="router_link"
+                to={`/edituser/${user.id}`}
+                user={user}
+              >
+                edit
+              </Link>
             </Button>
           </StyledTableCell>
           <StyledTableCell align="center">
@@ -68,7 +75,9 @@ class UsersList extends Component {
         <div className="usersList_header">
           <h3>User list</h3>
           <Button variant="contained" color="success">
-            Add new
+            <Link className="router_link" to="/adduser">
+              Add new
+            </Link>
           </Button>
         </div>
         <TableContainer component={Paper}>

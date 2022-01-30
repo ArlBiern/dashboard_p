@@ -4,6 +4,8 @@
   --reference-size: 16px;
   --light-color: #fff;
   --light-grey: #aaa;
+  --dark-grey: #222;
+  --dark: #000;
 }
 
 * {
@@ -16,4 +18,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-family: var(--main-font);
+  color: var(--dark);
+}
+
+.router_link {
+  text-decoration: none;
+  color: inherit;
 }

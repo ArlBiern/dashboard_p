@@ -1,0 +1,32 @@
+.form_cnt {
+  box-shadow: 2px 2px 10px var(--light-grey);
+  border-radius: 10px;
+  width: 70%;
+  margin: 0 auto;
+  padding: calc(2 * var(--reference-size));
+}
+
+.form_title {
+  font-size: calc(1.5 * var(--reference-size));
+}
+
+.form_box {
+  width: 70%;
+  margin: 0 auto;
+  padding: calc(2 * var(--reference-size));
+}
+
+.form_box .form_textField {
+  margin: var(--reference-size);
+}
+
+.form_buttonsCnt {
+  width: 70%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.form_buttonsCnt .form_button {
+  width: 100px;
+  margin: 0 var(--reference-size);
+}

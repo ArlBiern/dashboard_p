@@ -1,0 +1,30 @@
+.pageNotFound_cnt {
+  box-shadow: 2px 2px 10px var(--light-grey);
+  border-radius: 10px;
+  width: 75%;
+  margin: 0 auto;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageNotFound_mainText,
+.pageNotFound_helpText {
+  padding: var(--reference-size);
+  text-align: center;
+}
+
+.pageNotFound_mainText {
+  font-size: calc(3 * var(--reference-size));
+}
+
+.pageNotFound_helpText {
+  font-size: calc(2 * var(--reference-size));
+}
+
+.pageNotFound_returnLink {
+  font-weight: 700;
+  color: var(--dark-grey);
+}
