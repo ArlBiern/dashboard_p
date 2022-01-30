@@ -4,6 +4,14 @@ const posts = (state = [], action) => {
       return action.payload;
     case "FETCH_USER":
       return [...state, action.payload];
+    case "SORT_USERS":
+      return [...state].sort((a, b) =>
+        a.username.toLowerCase() > b.username.toLowerCase()
+          ? action.payload
+          : b.username.toLowerCase() > a.username.toLowerCase()
+          ? -action.payload
+          : 0
+      );
     case "ADD_USER":
       return [...state, action.payload];
     case "EDIT_USER":

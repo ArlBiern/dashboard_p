@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import Modal from "react-modal";
 import _ from "lodash";
 
-import { fetchUsers, deleteUser, fetchingUsers } from "../actions";
+import { fetchUsers, deleteUser, fetchingUsers, sortUsers } from "../actions";
 import "../styles/usersList.css";
 import "../styles/modal.css";
 
@@ -118,6 +118,20 @@ class UsersList extends Component {
     }
   }
 
+  sortByUsername(e) {
+    const sortOption = e.target.dataset.sort;
+    this.props.sortUsers(+sortOption);
+    if (sortOption === "1") {
+      e.target.innerText = "Sort descending";
+      e.target.dataset.sort = "-1";
+      e.target.classList.add("descending");
+    } else {
+      e.target.innerText = "Sort ascending";
+      e.target.dataset.sort = "1";
+      e.target.classList.remove("descending");
+    }
+  }
+
   render() {
     return (
       <div className="usersList_cnt">
@@ -135,7 +149,18 @@ class UsersList extends Component {
               <TableRow>
                 <StyledTableCell>ID</StyledTableCell>
                 <StyledTableCell align="center">Name</StyledTableCell>
-                <StyledTableCell align="center">Username</StyledTableCell>
+                <StyledTableCell align="center" className="usernameField">
+                  Username
+                  <Button
+                    variant="contained"
+                    color="success"
+                    data-sort="1"
+                    onClick={this.sortByUsername.bind(this)}
+                    className="sortButton"
+                  >
+                    Sort ascending
+                  </Button>
+                </StyledTableCell>
                 <StyledTableCell align="center">E-mail</StyledTableCell>
                 <StyledTableCell align="center">City</StyledTableCell>
                 <StyledTableCell align="center">Edit</StyledTableCell>
@@ -189,4 +214,5 @@ export default connect(mapStateToProps, {
   fetchUsers,
   deleteUser,
   fetchingUsers,
+  sortUsers,
 })(UsersList);

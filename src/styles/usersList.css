@@ -24,3 +24,39 @@
   font-size: calc(2 * var(--reference-size));
   line-height: calc(8 * var(--reference-size));
 }
+
+.usersList_cnt .usernameField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.usersList_cnt .sortButton {
+  width: 130px;
+  margin-left: 20px;
+  background-color: rgb(8, 47, 156);
+  padding: 1px 6px;
+  font-size: 12px;
+  transition: all ease-in-out 0.3s;
+  box-shadow: 0 0 5px var(--light-color);
+}
+
+.usersList_cnt .sortButton.descending {
+  background-color: rgb(167, 39, 0);
+}
+
+.usersList_cnt .sortButton:hover {
+  background-color: var(--light-color);
+  color: var(--dark);
+}
+
+@media only screen and (max-width: 1000px) {
+  .usersList_cnt .usernameField {
+    flex-direction: column;
+  }
+
+  .usersList_cnt .sortButton {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

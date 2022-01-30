@@ -94,3 +94,10 @@ export const fetchingUsers = (fetchingState) => {
     payload: fetchingState,
   };
 };
+
+export const sortUsers = (direction) => {
+  return {
+    type: "SORT_USERS",
+    payload: direction,
+  };
+};
