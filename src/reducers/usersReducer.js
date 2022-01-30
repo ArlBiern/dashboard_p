@@ -7,15 +7,18 @@ const posts = (state = [], action) => {
     case "ADD_USER":
       return [...state, action.payload];
     case "EDIT_USER":
-      return state.map((item) => {
-        if (item.id !== action.payload.id) {
-          return item;
+      return state.map((user) => {
+        if (user.id !== action.payload.id) {
+          return user;
         }
         return {
-          ...item,
+          ...user,
           ...action.payload,
         };
       });
+    case "DELETE_USER": {
+      return state.filter((user) => user.id !== action.payload);
+    }
     default:
       return state;
   }

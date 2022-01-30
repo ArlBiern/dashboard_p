@@ -6,6 +6,7 @@
   --light-grey: #aaa;
   --dark-grey: #222;
   --dark: #000;
+  --contrast-color: rgb(200, 20, 20);
 }
 
 * {

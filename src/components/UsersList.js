@@ -10,9 +10,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Modal from "react-modal";
+import _ from "lodash";
 
-import { fetchUsers } from "../actions";
+import { fetchUsers, deleteUser, fetchingUsers } from "../actions";
 import "../styles/usersList.css";
+import "../styles/modal.css";
+
+Modal.setAppElement("#root");
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,38 +40,82 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 class UsersList extends Component {
+  state = { modalOpen: false, userIdToDelete: "" };
+
   componentDidMount() {
+    _.memoize(() => this.props.fetchingUsers(true));
+
     this.props.fetchUsers();
   }
 
-  renderUsersList() {
-    return this.props.users.map((user) => {
-      return (
-        <StyledTableRow key={user.id}>
-          <StyledTableCell>{user.id}</StyledTableCell>
-          <StyledTableCell align="center">{user.name}</StyledTableCell>
-          <StyledTableCell align="center">{user.username}</StyledTableCell>
-          <StyledTableCell align="center">{user.email}</StyledTableCell>
-          <StyledTableCell align="center">{user.city}</StyledTableCell>
-          <StyledTableCell align="center">
-            <Button variant="outlined" color="success">
-              <Link
-                className="router_link"
-                to={`/edituser/${user.id}`}
-                user={user}
-              >
-                edit
-              </Link>
-            </Button>
-          </StyledTableCell>
-          <StyledTableCell align="center">
-            <Button variant="outlined" color="error">
-              delete
-            </Button>
-          </StyledTableCell>
-        </StyledTableRow>
-      );
+  deleteModalOpen(e) {
+    this.setState({
+      modalOpen: true,
+      userIdToDelete: e.target.dataset.user,
     });
+  }
+
+  deleteModalClose() {
+    this.setState({
+      modalOpen: false,
+      userIdToDelete: "",
+    });
+  }
+
+  deleteUser() {
+    this.props.deleteUser(this.state.userIdToDelete);
+    this.deleteModalClose();
+  }
+
+  renderUsersList() {
+    if (this.props.fetching) {
+      return (
+        <tr className="noUsers_row">
+          <td colSpan="7">Fetching data....</td>
+        </tr>
+      );
+    }
+
+    if (this.props.users.length === 0) {
+      return (
+        <tr className="noUsers_row">
+          <td colSpan="7">There are no more users in databese.</td>
+        </tr>
+      );
+    } else {
+      return this.props.users.map((user) => {
+        return (
+          <StyledTableRow key={user.id}>
+            <StyledTableCell>{user.id}</StyledTableCell>
+            <StyledTableCell align="center">{user.name}</StyledTableCell>
+            <StyledTableCell align="center">{user.username}</StyledTableCell>
+            <StyledTableCell align="center">{user.email}</StyledTableCell>
+            <StyledTableCell align="center">{user.city}</StyledTableCell>
+            <StyledTableCell align="center">
+              <Button variant="outlined" color="success">
+                <Link
+                  className="router_link"
+                  to={`/edituser/${user.id}`}
+                  user={user}
+                >
+                  edit
+                </Link>
+              </Button>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={this.deleteModalOpen.bind(this)}
+                data-user={user.id}
+              >
+                delete
+              </Button>
+            </StyledTableCell>
+          </StyledTableRow>
+        );
+      });
+    }
   }
 
   render() {
@@ -96,6 +145,34 @@ class UsersList extends Component {
             <TableBody>{this.renderUsersList()}</TableBody>
           </Table>
         </TableContainer>
+        <Modal
+          isOpen={this.state.modalOpen}
+          onRequestClose={this.deleteModalClose.bind(this)}
+          className="modal_cnt"
+        >
+          <h2 className="modalTitle">Delete</h2>
+          <p className="modalText">
+            Would you like to delete user with ID {this.state.userIdToDelete}?
+          </p>
+          <div className="modalButtons_cnt">
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={this.deleteModalClose.bind(this)}
+              className="modalButton"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={this.deleteUser.bind(this)}
+              className="modalButton"
+            >
+              Delete
+            </Button>
+          </div>
+        </Modal>
       </div>
     );
   }
@@ -104,7 +181,12 @@ class UsersList extends Component {
 const mapStateToProps = (state) => {
   return {
     users: state.users,
+    fetching: state.fetchingUsers,
   };
 };
 
-export default connect(mapStateToProps, { fetchUsers })(UsersList);
+export default connect(mapStateToProps, {
+  fetchUsers,
+  deleteUser,
+  fetchingUsers,
+})(UsersList);

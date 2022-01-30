@@ -18,3 +18,9 @@
 .usersList_header h3 {
   font-size: calc(1.5 * var(--reference-size));
 }
+
+.noUsers_row {
+  text-align: center;
+  font-size: calc(2 * var(--reference-size));
+  line-height: calc(8 * var(--reference-size));
+}
