@@ -2,7 +2,7 @@
 
 ## How to run the project?
 
-In the project directory, you can run:
+In the project directory, you can run (after installing all packages - npm install):
 
 #### `npm start`
 
